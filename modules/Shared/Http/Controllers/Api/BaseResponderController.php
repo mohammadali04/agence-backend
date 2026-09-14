@@ -15,6 +15,7 @@ class BaseResponderController extends Controller
     public function sendError($error, $errorMessages = [], $statusCode = null){
         $response = [
             'success' => false,
+            'code' => $statusCode,
             'message' => $error,
             'errors' => $errorMessages
         ];
