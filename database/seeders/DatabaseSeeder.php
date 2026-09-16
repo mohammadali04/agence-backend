@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Database\Factories\RolePermissionSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Modules\Identity\Database\Seeders\UserSeeder;
 use Modules\Home\Models\Blog;
 
 class DatabaseSeeder extends Seeder
@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
 //            FeaturesSeeder::class,
 //        UserSeeder::class,
+        RolePermissionSeeder::class,
         ]);
-        Blog::factory(3)->create();
         // User::factory(10)->create();
     }
 }

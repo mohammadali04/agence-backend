@@ -10,13 +10,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Modules\Identity\Database\Factories\UserFactory;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['first_name', 'last_name', 'phone', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens , HasFactory, Notifiable;
+    use HasApiTokens , HasFactory, Notifiable , HasRoles;
 
     /**
      * Get the attributes that should be cast.
