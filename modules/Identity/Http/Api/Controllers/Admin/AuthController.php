@@ -2,19 +2,13 @@
 
 namespace Modules\Identity\Http\Api\Controllers\Admin;
 
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Modules\Identity\Http\Resources\UserResource;
 use Modules\Identity\Models\User;
 use Modules\Shared\Http\Controllers\Api\BaseResponderController;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-//use Laravel\Passport\Http\Controllers\AccessTokenController;
 
 class AuthController extends BaseResponderController
 {
@@ -45,6 +39,7 @@ class AuthController extends BaseResponderController
             'password' => Hash::make($request['password']),
         ]);
 
+        $user->assignRole('user');
         $token = $user->createToken('auth_token')->accessToken;
         return $this->sendResponse([
             'user' => new UserResource($user),
@@ -76,8 +71,11 @@ class AuthController extends BaseResponderController
             return $this->sendResponse('Invalid credentials', 'ایمیل یا پسورد اشتباه است', 401);
         }
         $token = $user->createToken('auth_token')->accessToken;
+        $permissions = $user->getAllPermissions();
         return $this->sendResponse([
             'user' => new UserResource($user),
+            'roles' => $user->roles,
+            'permissions' => $permissions,
             'token' => $token
         ], 'user logged in successfully')
             ->withCookie(
@@ -103,6 +101,30 @@ class AuthController extends BaseResponderController
     {
         $user = User::find($request->id);
         return $this->sendResponse(new UserResource($user), 'User found');
+    }
+    public function updateUser(Request $request,int $id){
+        $user = User::findOrFail($id);
+        if(!$request->user()->can('edit-user')){
+            return $this->sendError('You do not have permission to edit this user.',[],403);
+        }
+        $validated = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'required|string',
+            'email' => 'required|string|email|max:255',
+//            'password' => 'required|string|min:8',
+        ]);
+        if($validated->fails()){
+            return $this->sendError('Validation Error.', $validated->errors(),422);
+        }
+        $user->update([
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'phone' => $request['phone'],
+            'email' => $request['email'],
+        ]);
+        $user->syncRoles(collect($request->roles)->pluck('name'));
+        return $this->sendResponse(new UserResource($user), 'User updated successfully.');
     }
     public function delete(int $id){
         User::findOrFail($id)->delete();

@@ -9,6 +9,7 @@ return [
     \Modules\Home\Providers\HomeServiceProvider::class,
     \Modules\Blog\Providers\BlogServiceProvider::class,
     \Modules\Identity\Providers\IdentityServiceProvider::class,
-    \Modules\Identity\Providers\SharedServiceProvider::class
+    \Modules\Identity\Providers\SharedServiceProvider::class,
+    \modules\Permission\Providers\PermissionServiceProvider::class,
 
 ];

@@ -17,7 +17,10 @@ class PermissionController extends BaseResponderController
         $permission = Permission::findOrFail($id);
         return $this->sendResponse($permission, 'Permission retrieved successfully.');
     }
-    public function store(Request $request) {}
+    public function store(Request $request) {
+        $permission = Permission::create(['name' => $request->name,'guard_name' => 'api']);
+        return $this->sendResponse($permission, 'Permission created successfully.');
+    }
     public function update(Request $request, int $id){}
     public function delete(int $id){}
 

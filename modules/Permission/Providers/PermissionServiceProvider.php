@@ -8,8 +8,8 @@ class PermissionServiceProvider extends ServiceProvider
 {
     public function register(){}
     public function boot(){
-        $this->loadRoutesFrom(app_path(__DIR__.'./../Routes/permission_api_routes.php'));
-        $this->loadMigrationsFrom(app_path(__DIR__.'./../Database/Migrations'));
+        $this->loadRoutesFrom(__DIR__.'/../Routes/permission_api_routes.php');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
     }
 
 }

@@ -1,4 +1,5 @@
 <?php
+namespace Modules\Permission\Routes;
 use Illuminate\Support\Facades\Route;
 use modules\Permission\Http\Controllers\Api\Admin\PermissionController;
 use modules\Permission\Http\Controllers\Api\Admin\RoleController;

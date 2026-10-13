@@ -16,6 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
+    protected $guard_name = 'api';
     /** @use HasFactory<UserFactory> */
     use HasApiTokens , HasFactory, Notifiable , HasRoles;
 

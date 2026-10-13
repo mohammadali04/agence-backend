@@ -3,6 +3,8 @@
 namespace Modules\Identity\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Ramsey\Collection\Collection;
+use modules\Permission\Http\Resources\RoleResource;
 
 class UserResource extends JsonResource
 {
@@ -12,7 +14,8 @@ class UserResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'phone' => $this->phone
+            'phone' => $this->phone,
+            'roles' => RoleResource::collection($this->roles)
         ];
     }
 
